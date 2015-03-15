@@ -16,6 +16,27 @@ public class Classes {
 	protected static ArrayList<BR> BR_CLASS = new ArrayList<BR>();
 	protected static ArrayList<C> C_CLASS = new ArrayList<C>();
 	protected static ArrayList<CR> CR_CLASS = new ArrayList<CR>();
+	// --//
+	protected static ArrayList<A_Term2> A_Term2_CLASS = new ArrayList<A_Term2>();
+	protected static ArrayList<AR_Term2> AR_Term2_CLASS = new ArrayList<AR_Term2>();
+
+	public static class A_Term2 {
+		Teacher t1;// MainCourse
+		Teacher t2;// Listening
+		Teacher t3;// Writing
+		String[][] schedule = new String[5][5];
+		int[] lesson = { 0, 0, 0, 0, 0 };
+
+	}
+
+	public static class AR_Term2 {
+		Teacher t1;// MainCourse
+		Teacher t2;// Listening
+		Teacher t3;// Writing
+		String[][] schedule = new String[5][5];
+		int[] lesson = { 0, 0, 0, 0, 0 };
+
+	}
 
 	public static class A {
 		Teacher t1;// MainCourse

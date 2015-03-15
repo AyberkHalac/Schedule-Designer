@@ -8,6 +8,9 @@ public class AR {
 
 	protected static boolean control = true;
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addMCAR(ArrayList<Teacher> teacherList2) {
 		int teacherCount = 1;
 		Random rnd = new Random();
@@ -170,6 +173,9 @@ public class AR {
 		}
 	}
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addRWAR(ArrayList<Teacher> teacherList2) {
 		int teacherCount = 2;
 		int totalCount = 0;
@@ -383,6 +389,9 @@ public class AR {
 		}
 	}
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addLSAR(ArrayList<Teacher> teacherList2) {
 		int teacherCount = 3;
 		int totalCount = 0;
@@ -419,6 +428,7 @@ public class AR {
 							}
 
 						}
+
 						boolean[] array = { false, false, false, false, false };
 						int[][] days = new int[2][2];
 						int counter = 0;
@@ -586,6 +596,12 @@ public class AR {
 		return true;
 	}
 
+	/**
+	 * @param teacher
+	 * @param type
+	 * @param day
+	 * @return
+	 */
 	private static boolean isEmptyAR(Teacher teacher, int type, int day) {
 		if (type == 0)
 			if (teacher.getTeacherSchedule()[day][0] == null
@@ -625,6 +641,11 @@ public class AR {
 
 	}
 
+	/**
+	 * @param t
+	 * @param s
+	 * @return
+	 */
 	private static boolean canTakeThisLevel(Teacher t, String s) {
 		if (t.getCourseLevel().indexOf(s) == -1)
 			return false;
@@ -633,6 +654,11 @@ public class AR {
 
 	}
 
+	/**
+	 * @param t
+	 * @param s
+	 * @return
+	 */
 	private static boolean canTakeThisLessonType(Teacher t, String s) {
 		if (t.getLessonType().indexOf(s) == -1)
 			return false;
@@ -640,6 +666,14 @@ public class AR {
 			return true;
 	}
 
+	/**
+	 * @param cls
+	 * @param type
+	 * @param day
+	 * @param array
+	 * @param teacherCount
+	 * @return
+	 */
 	private static boolean isLessonOK_UpperAR(Classes.AR cls, int type,
 			int day, boolean[] array, int teacherCount) {
 		if (type == 0) {

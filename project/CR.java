@@ -9,48 +9,52 @@ public class CR {
 	protected static boolean control = true;
 	private static int FAULT = 0;
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addMCCR(ArrayList<Teacher> teacherList2) {
 		ArrayList<Teacher> list = new<Teacher> ArrayList();
-		control = true;
 		Random rnd = new Random();
 		if (Classes.CR_CLASS.size() != 0) {
 			for (Classes.CR cls : Classes.CR_CLASS) {
 				list.addAll(teacherList2);
-				if (teacherList2.size() != 0 && list.size() != 0) {
+				while (teacherList2.size() != 0 && list.size() != 0
+						&& control != false) {
 					control = true;
 					Teacher teacher;
-					if (list.size() > 0)
+
+					if (list.size() != 0) {
 						teacher = list.get((int) rnd.nextInt(list.size() + 0));
-					else {
+						list.remove(teacher);
+					} else {
 						control = false;
 						break;
 					}
-
-					while (!canTakeThisLevel(teacher, "CR")
-							|| !canTakeThisLessonType(teacher, "MC")
+					while (canTakeThisLevel(teacher, "CR") == false
+							|| canTakeThisLessonType(teacher, "MC") == false
 							|| teacher.getCourseHour() < 10) {
-						list.remove(teacher);
-						if (list.size() > 0)
+						if (list.size() != 0)
 							teacher = list
 									.get((int) rnd.nextInt(list.size() + 0));
 						else {
 							control = false;
 							break;
 						}
-
+						list.remove(teacher);
 					}
 					if (control == false)
 						break;
-					FAULT = 0;
+
 					boolean[] array = { false, false, false, false, false };
 					int counter = 0;
-
+					int saveTeacher[][] = new int[4][2];
+					FAULT = 0;
 					while (counter != 2) {
 						int type = -1;
 						int day = rnd.nextInt(5) + 0;
 
-						while (!isEmpty(teacher, type, day)
-								|| !isLessonOK_UpperCR(cls, type, day, array, 1)) {
+						while (isEmpty(teacher, type, day) == false
+								|| isLessonOK_UpperCR(cls, type, day, array, 1) == false) {
 							type = rnd.nextInt(2) + 0;
 							day = rnd.nextInt(5) + 0;
 							FAULT++;
@@ -73,6 +77,7 @@ public class CR {
 							array[day] = true;
 							counter++;
 							cls.lesson[day] = 3;
+							saveTeacher[counter][0] = day;
 						}
 						if (type == 1) {
 							teacher.getTeacherSchedule()[day][2] = "MC / CR-"
@@ -88,19 +93,45 @@ public class CR {
 							array[day] = true;
 							counter++;
 							cls.lesson[day] = 3;
+							saveTeacher[counter][0] = day;
 						}
 					}
-					if (FAULT == 20)
-						break;
+					if (FAULT == 20) {
+						for (int i = 0; i < 2; i++) {
+							if (saveTeacher[i][1] == 0) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][0] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][1] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][2] = null;
+								cls.schedule[saveTeacher[i][0]][0] = null;
+								cls.schedule[saveTeacher[i][0]][1] = null;
+								cls.schedule[saveTeacher[i][0]][2] = null;
+								teacher.setRestHour(teacher.getRestHour() - 3);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							} else if (saveTeacher[i][1] == 1) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][2] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][3] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][4] = null;
+								cls.schedule[saveTeacher[i][0]][2] = null;
+								cls.schedule[saveTeacher[i][0]][3] = null;
+								cls.schedule[saveTeacher[i][0]][4] = null;
+								teacher.setRestHour(teacher.getRestHour() - 3);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							}
+						}
+
+						continue;
+					}
 					FAULT = 0;
 					counter = 0;
 					while (counter != 2) {
-						int type = -1; // ilk 2 son 2
+						int type = -1;
 						int day = rnd.nextInt(5) + 0;
 
-						while (!isEmpty(teacher, type, day)
-								|| !isLessonOK_UpperCR(cls, type, day, array, 1)) {
-							type = rnd.nextInt(4) + 2;
+						while (isEmpty(teacher, type, day) == false
+								|| isLessonOK_UpperCR(cls, type, day, array, 1) == false) {
+							type = rnd.nextInt(2) + 2;
 							day = rnd.nextInt(5) + 0;
 							FAULT++;
 							if (FAULT == 20)
@@ -119,6 +150,7 @@ public class CR {
 							array[day] = true;
 							counter++;
 							cls.lesson[day] = 2;
+							saveTeacher[counter + 1][0] = day;
 						}
 						if (type == 3) {
 							teacher.getTeacherSchedule()[day][3] = "MC / CR-"
@@ -131,33 +163,74 @@ public class CR {
 							array[day] = true;
 							counter++;
 							cls.lesson[day] = 2;
+							saveTeacher[counter + 1][0] = day;
 						}
 					}
 					if (FAULT == 20) {
-						control = false;
-						break;
+						for (int i = 0; i < 4; i++) {
+							if (saveTeacher[i][1] == 0) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][0] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][1] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][2] = null;
+								cls.schedule[saveTeacher[i][0]][0] = null;
+								cls.schedule[saveTeacher[i][0]][1] = null;
+								cls.schedule[saveTeacher[i][0]][2] = null;
+								teacher.setRestHour(teacher.getRestHour() - 3);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							} else if (saveTeacher[i][1] == 1) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][2] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][3] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][4] = null;
+								cls.schedule[saveTeacher[i][0]][2] = null;
+								cls.schedule[saveTeacher[i][0]][3] = null;
+								cls.schedule[saveTeacher[i][0]][4] = null;
+								teacher.setRestHour(teacher.getRestHour() - 3);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							} else if (saveTeacher[i][1] == 2) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][0] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][1] = null;
+								cls.schedule[saveTeacher[i][0]][0] = null;
+								cls.schedule[saveTeacher[i][0]][1] = null;
+								teacher.setRestHour(teacher.getRestHour() - 2);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							} else if (saveTeacher[i][1] == 3) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][3] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][4] = null;
+								cls.schedule[saveTeacher[i][0]][3] = null;
+								cls.schedule[saveTeacher[i][0]][4] = null;
+								teacher.setRestHour(teacher.getRestHour() - 2);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							}
+						}
+						continue;
 					}
 					teacher.setRestHour(0);
 					teacher.setCourseHour(teacher.getCourseHour() - 10);
 					cls.t1 = teacher;
 					teacherList2.remove(cls.t1);
-
 					list.remove(teacher);
-
-				}
-				if (control == false)
 					break;
 
+				}
+				if (list.size() == 0 || control == false || cls.t1 == null) {
+					control = false;
+					break;
+				}
+
 				list.clear();
-			}
-			if (FAULT == 20) {
-				control = false;
 			}
 
 		}
 
 	}
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addRWCR(ArrayList<Teacher> teacherList2) {
 
 		int teacherCount = 2;
@@ -193,6 +266,8 @@ public class CR {
 							}
 
 						}
+						if (cls.t1.equals(teacher))
+							continue;
 						if (control == false)
 							break;
 
@@ -338,6 +413,9 @@ public class CR {
 		}
 	}
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addLSCR(ArrayList<Teacher> teacherList2) {
 
 		int teacherCount = 3;
@@ -376,6 +454,10 @@ public class CR {
 							}
 
 						}
+						if (cls.t1.equals(teacher) || cls.t2.equals(teacher))
+							continue;
+						if (control == false)
+							break;
 						list.remove(teacher);
 						boolean[] array = { false, false, false, false, false };
 						int[][] days = new int[2][2];
@@ -527,6 +609,14 @@ public class CR {
 		}
 	}
 
+	/**
+	 * @param cls
+	 * @param type
+	 * @param day
+	 * @param array
+	 * @param teacherCount
+	 * @return
+	 */
 	private static boolean isLessonOK_UpperCR(Classes.CR cls, int type,
 			int day, boolean[] array, int teacherCount) {
 		if (type == 0) {
@@ -574,6 +664,11 @@ public class CR {
 		return false;
 	}
 
+	/**
+	 * @param t
+	 * @param s
+	 * @return
+	 */
 	private static boolean canTakeThisLevel(Teacher t, String s) {
 		if (t.getCourseLevel().indexOf(s) == -1)
 			return false;
@@ -582,6 +677,11 @@ public class CR {
 
 	}
 
+	/**
+	 * @param t
+	 * @param s
+	 * @return
+	 */
 	private static boolean canTakeThisLessonType(Teacher t, String s) {
 		if (t.getLessonType().indexOf(s) == -1)
 			return false;
@@ -589,6 +689,12 @@ public class CR {
 			return true;
 	}
 
+	/**
+	 * @param teacher
+	 * @param type
+	 * @param day
+	 * @return
+	 */
 	private static boolean isEmpty(Teacher teacher, int type, int day) {
 		if (type == 0)
 			if (teacher.getTeacherSchedule()[day][0] == null
@@ -612,6 +718,10 @@ public class CR {
 
 	}
 
+	/**
+	 * @param array
+	 * @return
+	 */
 	private static boolean check(int array[]) {
 		for (int i : array) {
 			if (i == 0)

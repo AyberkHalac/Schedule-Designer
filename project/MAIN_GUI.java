@@ -1,7 +1,6 @@
 package project;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.SystemColor;
@@ -12,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +27,9 @@ import javax.swing.MutableComboBoxModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import jxl.read.biff.BiffException;
+import jxl.write.WriteException;
 
 /**
  * @author AyberkHalac
@@ -252,68 +253,138 @@ public class MAIN_GUI extends JFrame {
 				//
 				//
 				teacherList2.addAll(teacherList);
+				Classes c = new Classes();
+
 				if (term.equals("1. Term")) {
+					if (A_Term2.control && AR_Term2.control && B.control
+							&& BR.control && C.control && CR.control) {
 
-					A.addMCA(teacherList2);
-					AR.addMCAR(teacherList2);
-					B.addMCB(teacherList2);
-					BR.addMCBR(teacherList2);
-					C.addMCC(teacherList2);
-					CR.addMCCR(teacherList2);
-
-					A.addRWA(teacherList2);
-					AR.addRWAR(teacherList2);
-					B.addRWB(teacherList2);
-					BR.addRWBR(teacherList2);
-					C.addRWC(teacherList2);
-					CR.addRWCR(teacherList2);
-
-					A.addLSA(teacherList2);
-					AR.addLSAR(teacherList2);
-					B.addLSB(teacherList2);
-					BR.addLSBR(teacherList2);
-					C.addLSC(teacherList2);
-					CR.addLSCR(teacherList2);
-
-				} else {
-					A_Term2.addMCA(teacherList2);
-					AR_Term2.addMCAR(teacherList2);
-					B.addMCB(teacherList2);
-					BR.addMCBR(teacherList2);
-					C.addMCC(teacherList2);
-					CR.addMCCR(teacherList2);
-
-					A_Term2.addRWA(teacherList2);
-					AR_Term2.addRWAR(teacherList2);
-					B.addRWB(teacherList2);
-					BR.addRWBR(teacherList2);
-					C.addRWC(teacherList2);
-					CR.addRWCR(teacherList2);
-
-					A_Term2.addLSA(teacherList2);
-					AR_Term2.addLSAR(teacherList2);
-					B.addLSB(teacherList2);
-					BR.addLSBR(teacherList2);
-					C.addLSC(teacherList2);
-					CR.addLSCR(teacherList2);
-				}
-
-				//
-				//
-				//
-
-				for (Teacher teacher : teacherList) {
-					System.out.println(teacher.getName() + "\n"
-							+ teacher.getCourseHour() + "\n"
-							+ teacher.getOffDay());
-					for (int j = 0; j < 6; j++) {
-						for (int k = 0; k < 5; k++) {
-							System.out.print(teacher.getTeacherSchedule()[k][j]
-									+ "         ");
+						Print print = new Print();
+						try {
+							print.printTeacher(teacherList);
+							print.printATerm2(Classes.A_Term2_CLASS);
+							print.printARTerm2(Classes.AR_Term2_CLASS);
+							print.printB(Classes.B_CLASS);
+							print.printBR(Classes.BR_CLASS);
+							print.printC(Classes.C_CLASS);
+							print.printCR(Classes.CR_CLASS);
+						} catch (WriteException | BiffException | IOException e1) {
+							e1.printStackTrace();
 						}
-						System.out.println();
 					}
-					System.out.println("----------------------------------");
+					// /////////////////////////////////////////////////////***********/////////////////////////////////////
+				}
+				if (term.equals("2. Term") || term.equals("3. Term")) {
+
+					int counter = 0;
+					do {
+						if (A_Term2.control == false
+								|| AR_Term2.control == false
+								|| B.control == false || BR.control == false
+								|| C.control == false || CR.control == false) {
+
+							for (Teacher teacher : teacherList) {
+								for (int j = 0; j < 6; j++) {
+									for (int k = 0; k < 5; k++) {
+										if (teacher.getTeacherSchedule()[k][j] != null
+												|| !(teacher
+														.getTeacherSchedule()[k][j] == "OFFDAY")) {
+											teacher.getTeacherSchedule()[k][j] = null;
+										}
+									}
+								}
+
+								teacher.setCourseHour(teacher
+										.getCourseHourORG());
+								teacher.setRestHour(0);
+							}
+							teacherList2.clear();
+							teacherList2.addAll(teacherList);
+
+							Classes.A_Term2_CLASS.clear();
+							Classes.AR_Term2_CLASS.clear();
+							Classes.B_CLASS.clear();
+							Classes.BR_CLASS.clear();
+							Classes.C_CLASS.clear();
+							Classes.CR_CLASS.clear();
+							A_Term2.control = true;
+							AR_Term2.control = true;
+							B.control = true;
+							BR.control = true;
+							C.control = true;
+							CR.control = true;
+							INFO_GUI.createClass(c.getALevel(), c.getARLevel(),
+									c.getBLevel(), c.getBRLevel(),
+									c.getCLevel(), c.getCRLevel());
+						}
+
+						if (Classes.A_Term2_CLASS.size() != 0) {
+							A_Term2.addMCA(teacherList2);
+							A_Term2.addRWA(teacherList2);
+							A_Term2.addLSA(teacherList2);
+						}
+						if (Classes.AR_Term2_CLASS.size() != 0
+								&& A_Term2.control) {
+							AR_Term2.addMCAR(teacherList2);
+							AR_Term2.addRWAR(teacherList2);
+							AR_Term2.addLSAR(teacherList2);
+						}
+						if (Classes.B_CLASS.size() != 0 && A_Term2.control
+								&& AR_Term2.control) {
+							B.addMCB(teacherList2);
+							B.addRWB(teacherList2);
+							B.addLSB(teacherList2);
+
+						}
+						if (Classes.BR_CLASS.size() != 0 && B.control
+								&& BR.control && A_Term2.control
+								&& AR_Term2.control) {
+							BR.addMCBR(teacherList2);
+							BR.addRWBR(teacherList2);
+							BR.addLSBR(teacherList2);
+						}
+						if (Classes.C_CLASS.size() != 0 && B.control
+								&& BR.control && C.control && A_Term2.control
+								&& AR_Term2.control) {
+							C.addMCC(teacherList2);
+							C.addRWC(teacherList2);
+							C.addLSC(teacherList2);
+						}
+						if (Classes.CR_CLASS.size() != 0 && B.control
+								&& BR.control && C.control && CR.control
+								&& A_Term2.control && AR_Term2.control) {
+							CR.addMCCR(teacherList2);
+							CR.addRWCR(teacherList2);
+							CR.addLSCR(teacherList2);
+						}
+
+						if (counter == 40)
+							break;
+						else {
+							counter++;
+
+						}
+					} while (A_Term2.control == false
+							|| AR_Term2.control == false || B.control == false
+							|| BR.control == false || C.control == false
+							|| CR.control == false);
+
+					if (A_Term2.control && AR_Term2.control && B.control
+							&& BR.control && C.control && CR.control) {
+
+						Print print = new Print();
+						try {
+							print.printTeacher(teacherList);
+							print.printATerm2(Classes.A_Term2_CLASS);
+							print.printARTerm2(Classes.AR_Term2_CLASS);
+							print.printB(Classes.B_CLASS);
+							print.printBR(Classes.BR_CLASS);
+							print.printC(Classes.C_CLASS);
+							print.printCR(Classes.CR_CLASS);
+						} catch (WriteException | BiffException | IOException e1) {
+							e1.printStackTrace();
+						}
+					}
 				}
 
 			}
@@ -508,9 +579,8 @@ public class MAIN_GUI extends JFrame {
 	private synchronized void IO_ops() throws IOException {
 
 		try {
-			BufferedReader in = new BufferedReader(
-					new FileReader(
-							"C:/Users/AyberkHalac/workspace/Tobb_Etu/src/Text_Files/teacher_info.txt"));// FIX
+			BufferedReader in = new BufferedReader(new FileReader(
+					"C:/Schedule/teacher_info.txt"));
 			// IT
 			String line;
 			while ((line = in.readLine()) != null) {

@@ -32,6 +32,10 @@ public class Teacher {
 		return courseLevel;
 	}
 
+	void setTeacherSchedule(String[][] teacherSchedule) {
+		this.teacherSchedule = teacherSchedule;
+	}
+
 	String[][] getTeacherSchedule() {
 		return teacherSchedule;
 	}
@@ -48,12 +52,16 @@ public class Teacher {
 		this.restHour = restHour;
 	}
 
-	int getCourseHourORG() {
-		return courseHourORG;
-	}
-
 	void setCourseHourORG(int courseHourORG) {
 		this.courseHourORG = courseHourORG;
+	}
+
+	void setCourseLevel(ArrayList<String> courseLevel) {
+		this.courseLevel = courseLevel;
+	}
+
+	int getCourseHourORG() {
+		return courseHourORG;
 	}
 
 	private int courseHour;
@@ -62,7 +70,7 @@ public class Teacher {
 	private String name;
 	private int restHour;
 	private ArrayList<String> lessonType = new ArrayList<String>();
-	private ArrayList<String> courseLevel = new ArrayList<String>();// FILL IT
+	private ArrayList<String> courseLevel = new ArrayList<String>();
 	private String[][] teacherSchedule = new String[5][6];
 
 }

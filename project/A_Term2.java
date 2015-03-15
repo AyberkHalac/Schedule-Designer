@@ -3,55 +3,62 @@ package project;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * @author AyberkHalac
+ *
+ */
 @SuppressWarnings({ "unused", "unchecked", "rawtypes" })
 public class A_Term2 {
 
 	protected static boolean control = true;
 	private static int FAULT = 0;
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addMCA(ArrayList<Teacher> teacherList2) {
 		ArrayList<Teacher> list = new<Teacher> ArrayList();
-
 		Random rnd = new Random();
-		if (Classes.A_CLASS.size() != 0) {
-			for (Classes.A cls : Classes.A_CLASS) {
+		if (Classes.A_Term2_CLASS.size() != 0) {
+			for (Classes.A_Term2 cls : Classes.A_Term2_CLASS) {
 				list.addAll(teacherList2);
-				if (teacherList2.size() != 0 && list.size() != 0) {
+				while (teacherList2.size() != 0 && list.size() != 0
+						&& control != false) {
 					control = true;
 					Teacher teacher;
-					if (list.size() > 0)
+
+					if (list.size() != 0) {
 						teacher = list.get((int) rnd.nextInt(list.size() + 0));
-					else {
+						list.remove(teacher);
+					} else {
 						control = false;
 						break;
 					}
-
-					while (!canTakeThisLevel(teacher, "A")
-							|| !canTakeThisLessonType(teacher, "MC")
+					while (canTakeThisLevel(teacher, "A") == false
+							|| canTakeThisLessonType(teacher, "MC") == false
 							|| teacher.getCourseHour() < 10) {
-						list.remove(teacher);
-						if (list.size() > 0)
+						if (list.size() != 0)
 							teacher = list
 									.get((int) rnd.nextInt(list.size() + 0));
 						else {
 							control = false;
-							System.out.println("control : " + control);
 							break;
 						}
-
+						list.remove(teacher);
 					}
 					if (control == false)
 						break;
-					FAULT = 0;
+
 					boolean[] array = { false, false, false, false, false };
 					int counter = 0;
-
+					int saveTeacher[][] = new int[4][2];
+					FAULT = 0;
 					while (counter != 2) {
 						int type = -1;
 						int day = rnd.nextInt(5) + 0;
 
-						while (!isEmpty(teacher, type, day)
-								|| !isLessonOK_UpperA(cls, type, day, array, 1)) {
+						while (isEmpty(teacher, type, day) == false
+								|| isLessonOK_UpperA(cls, type, day, array, 1) == false) {
 							type = rnd.nextInt(2) + 0;
 							day = rnd.nextInt(5) + 0;
 							FAULT++;
@@ -62,11 +69,11 @@ public class A_Term2 {
 							break;
 						if (type == 0) {
 							teacher.getTeacherSchedule()[day][0] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							teacher.getTeacherSchedule()[day][1] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							teacher.getTeacherSchedule()[day][2] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							cls.schedule[day][0] = "MC / " + teacher.getName();
 							cls.schedule[day][1] = "MC / " + teacher.getName();
 							cls.schedule[day][2] = "MC / " + teacher.getName();
@@ -74,14 +81,15 @@ public class A_Term2 {
 							array[day] = true;
 							counter++;
 							cls.lesson[day] = 3;
+							saveTeacher[counter][0] = day;
 						}
 						if (type == 1) {
 							teacher.getTeacherSchedule()[day][2] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							teacher.getTeacherSchedule()[day][3] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							teacher.getTeacherSchedule()[day][4] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							cls.schedule[day][2] = "MC / " + teacher.getName();
 							cls.schedule[day][3] = "MC / " + teacher.getName();
 							cls.schedule[day][4] = "MC / " + teacher.getName();
@@ -89,19 +97,45 @@ public class A_Term2 {
 							array[day] = true;
 							counter++;
 							cls.lesson[day] = 3;
+							saveTeacher[counter][0] = day;
 						}
 					}
-					if (FAULT == 20)
-						break;
+					if (FAULT == 20) {
+						for (int i = 0; i < 2; i++) {
+							if (saveTeacher[i][1] == 0) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][0] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][1] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][2] = null;
+								cls.schedule[saveTeacher[i][0]][0] = null;
+								cls.schedule[saveTeacher[i][0]][1] = null;
+								cls.schedule[saveTeacher[i][0]][2] = null;
+								teacher.setRestHour(teacher.getRestHour() - 3);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							} else if (saveTeacher[i][1] == 1) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][2] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][3] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][4] = null;
+								cls.schedule[saveTeacher[i][0]][2] = null;
+								cls.schedule[saveTeacher[i][0]][3] = null;
+								cls.schedule[saveTeacher[i][0]][4] = null;
+								teacher.setRestHour(teacher.getRestHour() - 3);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							}
+						}
+
+						continue;
+					}
 					FAULT = 0;
 					counter = 0;
 					while (counter != 2) {
-						int type = -1; // ilk 2 son 2
+						int type = -1;
 						int day = rnd.nextInt(5) + 0;
 
-						while (!isEmpty(teacher, type, day)
-								|| !isLessonOK_UpperA(cls, type, day, array, 1)) {
-							type = rnd.nextInt(4) + 2;
+						while (isEmpty(teacher, type, day) == false
+								|| isLessonOK_UpperA(cls, type, day, array, 1) == false) {
+							type = rnd.nextInt(2) + 2;
 							day = rnd.nextInt(5) + 0;
 							FAULT++;
 							if (FAULT == 20)
@@ -111,53 +145,96 @@ public class A_Term2 {
 							break;
 						if (type == 2) {
 							teacher.getTeacherSchedule()[day][0] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							teacher.getTeacherSchedule()[day][1] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							cls.schedule[day][0] = "MC / " + teacher.getName();
 							cls.schedule[day][1] = "MC / " + teacher.getName();
 							teacher.setRestHour(teacher.getRestHour() + 2);
 							array[day] = true;
 							counter++;
 							cls.lesson[day] = 2;
+							saveTeacher[counter + 1][0] = day;
 						}
 						if (type == 3) {
 							teacher.getTeacherSchedule()[day][3] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							teacher.getTeacherSchedule()[day][4] = "MC / A-"
-									+ Classes.A_CLASS.indexOf(cls);
+									+ Classes.A_Term2_CLASS.indexOf(cls);
 							cls.schedule[day][3] = "MC / " + teacher.getName();
 							cls.schedule[day][4] = "MC / " + teacher.getName();
 							teacher.setRestHour(teacher.getRestHour() + 2);
 							array[day] = true;
 							counter++;
 							cls.lesson[day] = 2;
+							saveTeacher[counter + 1][0] = day;
 						}
 					}
 					if (FAULT == 20) {
-						control = false;
-						break;
+						for (int i = 0; i < 4; i++) {
+							if (saveTeacher[i][1] == 0) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][0] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][1] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][2] = null;
+								cls.schedule[saveTeacher[i][0]][0] = null;
+								cls.schedule[saveTeacher[i][0]][1] = null;
+								cls.schedule[saveTeacher[i][0]][2] = null;
+								teacher.setRestHour(teacher.getRestHour() - 3);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							} else if (saveTeacher[i][1] == 1) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][2] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][3] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][4] = null;
+								cls.schedule[saveTeacher[i][0]][2] = null;
+								cls.schedule[saveTeacher[i][0]][3] = null;
+								cls.schedule[saveTeacher[i][0]][4] = null;
+								teacher.setRestHour(teacher.getRestHour() - 3);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							} else if (saveTeacher[i][1] == 2) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][0] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][1] = null;
+								cls.schedule[saveTeacher[i][0]][0] = null;
+								cls.schedule[saveTeacher[i][0]][1] = null;
+								teacher.setRestHour(teacher.getRestHour() - 2);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							} else if (saveTeacher[i][1] == 3) {
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][3] = null;
+								teacher.getTeacherSchedule()[saveTeacher[i][0]][4] = null;
+								cls.schedule[saveTeacher[i][0]][3] = null;
+								cls.schedule[saveTeacher[i][0]][4] = null;
+								teacher.setRestHour(teacher.getRestHour() - 2);
+								cls.lesson[saveTeacher[i][0]] = 0;
+
+							}
+						}
+						continue;
 					}
 					teacher.setRestHour(0);
-					teacher.setCourseHour(teacher.getCourseHour() + 10);
+					teacher.setCourseHour(teacher.getCourseHour() - 10);
 					cls.t1 = teacher;
 					teacherList2.remove(cls.t1);
-
 					list.remove(teacher);
-
-				}
-				if (control == false)
 					break;
 
+				}
+				if (list.size() == 0 || control == false || cls.t1 == null) {
+					control = false;
+					break;
+				}
+
 				list.clear();
-			}
-			if (FAULT == 20) {
-				control = false;
 			}
 
 		}
 
 	}
+
+	/**
+	 * @param teacherList2
+	 */
 
 	public static void addRWA(ArrayList<Teacher> teacherList2) {
 
@@ -165,8 +242,8 @@ public class A_Term2 {
 		int totalCount = 0;
 		ArrayList<Teacher> list = new<Teacher> ArrayList();
 		Random rnd = new Random();
-		if (Classes.A_CLASS.size() != 0 && control == true) {
-			for (Classes.A cls : Classes.A_CLASS) {
+		if (Classes.A_Term2_CLASS.size() != 0 && control == true) {
+			for (Classes.A_Term2 cls : Classes.A_Term2_CLASS) {
 				list.addAll(teacherList2);
 				if (teacherList2.size() != 0 && list.size() != 0) {
 					while (totalCount != 4 && control == true) {
@@ -179,7 +256,6 @@ public class A_Term2 {
 							control = false;
 							break;
 						}
-
 						while (!canTakeThisLevel(teacher, "A")
 								|| !canTakeThisLessonType(teacher, "RW")
 								|| teacher.getCourseHour() < 10
@@ -194,6 +270,8 @@ public class A_Term2 {
 							}
 
 						}
+						if (cls.t1.equals(teacher))
+							continue;
 						if (control == false)
 							break;
 
@@ -261,11 +339,14 @@ public class A_Term2 {
 							for (int i = 0; i < 4; i++) {
 								if (days[i][1] == 0) {
 									teacher.getTeacherSchedule()[days[i][0]][0] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][1] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][2] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									cls.schedule[days[i][0]][0] = "RW / "
 											+ teacher.getName();
 									cls.schedule[days[i][0]][1] = "RW / "
@@ -277,11 +358,14 @@ public class A_Term2 {
 
 								} else if (days[i][1] == 1) {
 									teacher.getTeacherSchedule()[days[i][0]][2] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][3] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][4] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									cls.schedule[days[i][0]][2] = "RW / "
 											+ teacher.getName();
 									cls.schedule[days[i][0]][3] = "RW / "
@@ -293,9 +377,11 @@ public class A_Term2 {
 
 								} else if (days[i][1] == 2) {
 									teacher.getTeacherSchedule()[days[i][0]][0] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][1] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									cls.schedule[days[i][0]][0] = "RW / "
 											+ teacher.getName();
 									cls.schedule[days[i][0]][1] = "RW / "
@@ -305,9 +391,11 @@ public class A_Term2 {
 
 								} else if (days[i][1] == 3) {
 									teacher.getTeacherSchedule()[days[i][0]][3] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][4] = "RW / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									cls.schedule[days[i][0]][3] = "RW / "
 											+ teacher.getName();
 									cls.schedule[days[i][0]][4] = "RW / "
@@ -339,14 +427,17 @@ public class A_Term2 {
 		}
 	}
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addLSA(ArrayList<Teacher> teacherList2) {
 
 		int teacherCount = 3;
 		int totalCount = 0;
 		ArrayList<Teacher> list = new<Teacher> ArrayList();
 		Random rnd = new Random();
-		if (Classes.A_CLASS.size() != 0 && control == true) {
-			for (Classes.A cls : Classes.A_CLASS) {
+		if (Classes.A_Term2_CLASS.size() != 0 && control == true) {
+			for (Classes.A_Term2 cls : Classes.A_Term2_CLASS) {
 				list.addAll(teacherList2);
 				if (teacherList2.size() != 0 && list.size() != 0
 						&& check(cls.lesson)) {
@@ -377,6 +468,10 @@ public class A_Term2 {
 							}
 
 						}
+						if (cls.t1.equals(teacher) || cls.t2.equals(teacher))
+							continue;
+						if (control == false)
+							break;
 						list.remove(teacher);
 						boolean[] array = { false, false, false, false, false };
 						int[][] days = new int[2][2];
@@ -441,11 +536,14 @@ public class A_Term2 {
 							for (int i = 0; i < 2; i++) {
 								if (days[i][1] == 0) {
 									teacher.getTeacherSchedule()[days[i][0]][0] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][1] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][2] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									cls.schedule[days[i][0]][0] = "LS / "
 											+ teacher.getName();
 									cls.schedule[days[i][0]][1] = "LS / "
@@ -457,11 +555,14 @@ public class A_Term2 {
 
 								} else if (days[i][1] == 1) {
 									teacher.getTeacherSchedule()[days[i][0]][2] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][3] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][4] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									cls.schedule[days[i][0]][2] = "LS / "
 											+ teacher.getName();
 									cls.schedule[days[i][0]][3] = "LS / "
@@ -473,9 +574,11 @@ public class A_Term2 {
 
 								} else if (days[i][1] == 2) {
 									teacher.getTeacherSchedule()[days[i][0]][0] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][1] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									cls.schedule[days[i][0]][0] = "LS / "
 											+ teacher.getName();
 									cls.schedule[days[i][0]][1] = "LS / "
@@ -485,9 +588,11 @@ public class A_Term2 {
 
 								} else if (days[i][1] == 3) {
 									teacher.getTeacherSchedule()[days[i][0]][3] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									teacher.getTeacherSchedule()[days[i][0]][4] = "LS / A-"
-											+ Classes.A_CLASS.indexOf(cls);
+											+ Classes.A_Term2_CLASS
+													.indexOf(cls);
 									cls.schedule[days[i][0]][3] = "LS / "
 											+ teacher.getName();
 									cls.schedule[days[i][0]][4] = "LS / "
@@ -528,8 +633,16 @@ public class A_Term2 {
 		}
 	}
 
-	private static boolean isLessonOK_UpperA(Classes.A cls, int type, int day,
-			boolean[] array, int teacherCount) {
+	/**
+	 * @param cls
+	 * @param type
+	 * @param day
+	 * @param array
+	 * @param teacherCount
+	 * @return
+	 */
+	private static boolean isLessonOK_UpperA(Classes.A_Term2 cls, int type,
+			int day, boolean[] array, int teacherCount) {
 		if (type == 0) {
 
 			if (cls.schedule[day][0] == null && cls.schedule[day][1] == null
@@ -575,6 +688,11 @@ public class A_Term2 {
 		return false;
 	}
 
+	/**
+	 * @param t
+	 * @param s
+	 * @return
+	 */
 	private static boolean canTakeThisLevel(Teacher t, String s) {
 		if (t.getCourseLevel().indexOf(s) == -1)
 			return false;
@@ -583,6 +701,11 @@ public class A_Term2 {
 
 	}
 
+	/**
+	 * @param t
+	 * @param s
+	 * @return
+	 */
 	private static boolean canTakeThisLessonType(Teacher t, String s) {
 		if (t.getLessonType().indexOf(s) == -1)
 			return false;
@@ -590,34 +713,47 @@ public class A_Term2 {
 			return true;
 	}
 
+	/**
+	 * @param teacher
+	 * @param type
+	 * @param day
+	 * @return
+	 */
 	private static boolean isEmpty(Teacher teacher, int type, int day) {
-		if (type == 0)
+		if (type == 0) {
 			if (teacher.getTeacherSchedule()[day][0] == null
 					&& teacher.getTeacherSchedule()[day][1] == null
 					&& teacher.getTeacherSchedule()[day][2] == null)
 				return true;
-		if (type == 1)
+		}
+		if (type == 1) {
 			if (teacher.getTeacherSchedule()[day][2] == null
 					&& teacher.getTeacherSchedule()[day][3] == null
 					&& teacher.getTeacherSchedule()[day][4] == null)
 				return true;
-		if (type == 2)
+		}
+		if (type == 2) {
 			if (teacher.getTeacherSchedule()[day][0] == null
 					&& teacher.getTeacherSchedule()[day][1] == null)
 				return true;
-		if (type == 3)
+		}
+		if (type == 3) {
 			if (teacher.getTeacherSchedule()[day][3] == null
 					&& teacher.getTeacherSchedule()[day][4] == null)
 				return true;
+		}
 		return false;
 
 	}
 
+	/**
+	 * @param array
+	 * @return
+	 */
 	private static boolean check(int array[]) {
 		for (int i : array) {
-			if (i == 0) {
+			if (i == 0)
 				return false;
-			}
 		}
 		return true;
 	}

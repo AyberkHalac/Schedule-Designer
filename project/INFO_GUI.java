@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -202,35 +201,26 @@ public class INFO_GUI extends JFrame {
 		contentPane.add(comboBox);
 	}
 
-	private void createClass(int a, int ar, int b, int br, int c, int cr) {
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		list.add(a);
-		list.add(ar);
-		list.add(b);
-		list.add(br);
-		list.add(c);
-		list.add(cr);
+	static void createClass(int a, int ar, int b, int br, int c, int cr) {
 
-		for (int i = 0; i < list.get(list.size() - 1); i++) {
-			if (a > i) {
-				Classes.A_CLASS.add(new Classes.A());
-			}
-			if (ar > i) {
-				Classes.AR_CLASS.add(new Classes.AR());
-			}
-			if (b > i) {
-				Classes.B_CLASS.add(new Classes.B());
-			}
-			if (br > i) {
-				Classes.BR_CLASS.add(new Classes.BR());
-			}
-			if (c > i) {
-				Classes.C_CLASS.add(new Classes.C());
-			}
-			if (cr > i) {
-				Classes.CR_CLASS.add(new Classes.CR());
-			}
-		}
+		for (int i = 0; i < a; i++)
+			Classes.A_Term2_CLASS.add(new Classes.A_Term2());
+
+		for (int i = 0; i < ar; i++)
+			Classes.AR_Term2_CLASS.add(new Classes.AR_Term2());
+
+		for (int i = 0; i < b; i++)
+			Classes.B_CLASS.add(new Classes.B());
+
+		for (int i = 0; i < br; i++)
+			Classes.BR_CLASS.add(new Classes.BR());
+
+		for (int i = 0; i < c; i++)
+			Classes.C_CLASS.add(new Classes.C());
+
+		for (int i = 0; i < cr; i++)
+			Classes.CR_CLASS.add(new Classes.CR());
+
 	}
 
 }

@@ -8,6 +8,9 @@ public class A {
 
 	protected static boolean control = true;
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addMCA(ArrayList<Teacher> teacherList2) {
 		int teacherCount = 1;
 		Random rnd = new Random();
@@ -170,6 +173,9 @@ public class A {
 		}
 	}
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addRWA(ArrayList<Teacher> teacherList2) {
 		int teacherCount = 2;
 		int totalCount = 0;
@@ -382,6 +388,9 @@ public class A {
 		}
 	}
 
+	/**
+	 * @param teacherList2
+	 */
 	public static void addLSA(ArrayList<Teacher> teacherList2) {
 		int teacherCount = 3;
 		int totalCount = 0;
@@ -578,6 +587,10 @@ public class A {
 		}
 	}
 
+	/**
+	 * @param array
+	 * @return
+	 */
 	private static boolean check(int array[]) {
 		for (int i : array) {
 			if (i == 0)
@@ -586,6 +599,12 @@ public class A {
 		return true;
 	}
 
+	/**
+	 * @param teacher
+	 * @param type
+	 * @param day
+	 * @return
+	 */
 	private static boolean isEmptyA(Teacher teacher, int type, int day) {
 		if (type == 0)
 			if (teacher.getTeacherSchedule()[day][0] == null
@@ -625,6 +644,11 @@ public class A {
 
 	}
 
+	/**
+	 * @param t
+	 * @param s
+	 * @return
+	 */
 	private static boolean canTakeThisLevel(Teacher t, String s) {
 		if (t.getCourseLevel().indexOf(s) == -1)
 			return false;
@@ -633,6 +657,11 @@ public class A {
 
 	}
 
+	/**
+	 * @param t
+	 * @param s
+	 * @return
+	 */
 	private static boolean canTakeThisLessonType(Teacher t, String s) {
 		if (t.getLessonType().indexOf(s) == -1)
 			return false;
@@ -640,6 +669,14 @@ public class A {
 			return true;
 	}
 
+	/**
+	 * @param cls
+	 * @param type
+	 * @param day
+	 * @param array
+	 * @param teacherCount
+	 * @return
+	 */
 	private static boolean isLessonOK_UpperA(Classes.A cls, int type, int day,
 			boolean[] array, int teacherCount) {
 		if (type == 0) {

@@ -11,6 +11,8 @@ public class Launcher {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					Print print = new Print();
+					print.set();
 					LoginPage frame = new LoginPage();
 					frame.setVisible(true);
 				} catch (Exception e) {
