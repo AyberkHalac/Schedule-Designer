@@ -248,22 +248,103 @@ public class MAIN_GUI extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 
-				//
-				//
-				//
-				//
 				teacherList2.addAll(teacherList);
 				Classes c = new Classes();
 
 				if (term.equals("1. Term")) {
-					if (A_Term2.control && AR_Term2.control && B.control
-							&& BR.control && C.control && CR.control) {
+					int counter = 0;
+					do {
+						if (A.control == false || AR.control == false
+								|| B.control == false || BR.control == false
+								|| C.control == false || CR.control == false) {
+
+							for (Teacher teacher : teacherList) {
+								for (int j = 0; j < 6; j++) {
+									for (int k = 0; k < 5; k++) {
+										if (teacher.getTeacherSchedule()[k][j] != null
+												|| !(teacher
+														.getTeacherSchedule()[k][j] == "OFFDAY")) {
+											teacher.getTeacherSchedule()[k][j] = null;
+										}
+									}
+								}
+
+								teacher.setCourseHour(teacher
+										.getCourseHourORG());
+								teacher.setRestHour(0);
+							}
+							teacherList2.clear();
+							teacherList2.addAll(teacherList);
+
+							Classes.A_CLASS.clear();
+							Classes.AR_CLASS.clear();
+							Classes.B_CLASS.clear();
+							Classes.BR_CLASS.clear();
+							Classes.C_CLASS.clear();
+							Classes.CR_CLASS.clear();
+							A.control = true;
+							AR.control = true;
+							B.control = true;
+							BR.control = true;
+							C.control = true;
+							CR.control = true;
+						}
+
+						if (Classes.A_CLASS.size() != 0) {
+							A.addMCA(teacherList2);
+							A.addRWA(teacherList2);
+							A.addLSA(teacherList2);
+						}
+						if (Classes.AR_CLASS.size() != 0 && A.control) {
+							AR.addMCAR(teacherList2);
+							AR.addRWAR(teacherList2);
+							AR.addLSAR(teacherList2);
+						}
+						if (Classes.B_CLASS.size() != 0 && A.control
+								&& AR.control && B.control && C.control
+								&& BR.control) {
+							B.addMCB(teacherList2);
+							B.addRWB(teacherList2);
+							B.addLSB(teacherList2);
+						}
+						if (Classes.BR_CLASS.size() != 0 && A.control
+								&& AR.control && B.control) {
+							BR.addMCBR(teacherList2);
+							BR.addRWBR(teacherList2);
+							BR.addLSBR(teacherList2);
+						}
+						if (Classes.C_CLASS.size() != 0 && A.control
+								&& AR.control && B.control && BR.control) {
+							C.addMCC(teacherList2);
+							C.addRWC(teacherList2);
+							C.addLSC(teacherList2);
+						}
+						if (Classes.CR_CLASS.size() != 0 && A.control
+								&& AR.control && B.control && C.control
+								&& BR.control) {
+							CR.addMCCR(teacherList2);
+							CR.addRWCR(teacherList2);
+							CR.addLSCR(teacherList2);
+						}
+
+						if (counter == 40)
+							break;
+						else {
+							counter++;
+
+						}
+					} while (A.control == false || AR.control == false
+							|| B.control == false || BR.control == false
+							|| C.control == false || CR.control == false);
+
+					if (A.control && AR.control && B.control && BR.control
+							&& C.control && CR.control) {
 
 						Print print = new Print();
 						try {
 							print.printTeacher(teacherList);
-							print.printATerm2(Classes.A_Term2_CLASS);
-							print.printARTerm2(Classes.AR_Term2_CLASS);
+							print.printA(Classes.A_CLASS);
+							print.printAR(Classes.AR_CLASS);
 							print.printB(Classes.B_CLASS);
 							print.printBR(Classes.BR_CLASS);
 							print.printC(Classes.C_CLASS);
@@ -272,8 +353,16 @@ public class MAIN_GUI extends JFrame {
 							e1.printStackTrace();
 						}
 					}
-					// /////////////////////////////////////////////////////***********/////////////////////////////////////
+
 				}
+				/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+				/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+				/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+				/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+				/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+				/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+				/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+
 				if (term.equals("2. Term") || term.equals("3. Term")) {
 
 					int counter = 0;
@@ -313,9 +402,10 @@ public class MAIN_GUI extends JFrame {
 							BR.control = true;
 							C.control = true;
 							CR.control = true;
-							INFO_GUI.createClass(c.getALevel(), c.getARLevel(),
-									c.getBLevel(), c.getBRLevel(),
-									c.getCLevel(), c.getCRLevel());
+							INFO_GUI.createClassTerm_2_3(c.getALevel(),
+									c.getARLevel(), c.getBLevel(),
+									c.getBRLevel(), c.getCLevel(),
+									c.getCRLevel());
 						}
 
 						if (Classes.A_Term2_CLASS.size() != 0) {

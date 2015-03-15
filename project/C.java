@@ -211,7 +211,6 @@ public class C {
 					teacher.setRestHour(0);
 					teacher.setCourseHour(teacher.getCourseHour() - 10);
 					cls.t1 = teacher;
-					teacherList2.remove(cls.t1);
 					list.remove(teacher);
 					break;
 
@@ -254,7 +253,7 @@ public class C {
 						while (!canTakeThisLevel(teacher, "C")
 								|| !canTakeThisLessonType(teacher, "RW")
 								|| teacher.getCourseHour() < 10
-								|| teacher.getName().equals(cls.t1.getName())) {
+								|| teacher.equals(cls.t1.getName())) {
 							list.remove(teacher);
 							if (list.size() > 0)
 								teacher = list.get((int) rnd.nextInt(list
@@ -393,7 +392,6 @@ public class C {
 							teacher.setRestHour(0);
 							teacher.setCourseHour(teacher.getCourseHour() - 10);
 							cls.t2 = teacher;
-							teacherList2.remove(cls.t2);
 
 						}
 
@@ -441,8 +439,8 @@ public class C {
 						while (!canTakeThisLevel(teacher, "C")
 								|| !canTakeThisLessonType(teacher, "LS")
 								|| teacher.getCourseHour() < 5
-								|| (teacher.getName().equals(cls.t1.getName()) && teacher
-										.getName().equals(cls.t2.getName()))) {
+								|| (teacher.equals(cls.t1.getName()) && teacher
+										.equals(cls.t2.getName()))) {
 							list.remove(teacher);
 							if (list.size() != 0)
 								teacher = list.get((int) rnd.nextInt(list
@@ -580,7 +578,6 @@ public class C {
 							teacher.setRestHour(0);
 							teacher.setCourseHour(teacher.getCourseHour() - 5);
 							cls.t3 = teacher;
-							teacherList2.remove(cls.t3);
 
 						}
 						list.remove(teacher);

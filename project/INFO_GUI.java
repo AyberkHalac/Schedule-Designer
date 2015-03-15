@@ -132,12 +132,25 @@ public class INFO_GUI extends JFrame {
 						MAIN_GUI.setNumberOfTeachers(Integer
 								.parseInt(textField_Teacher.getText()));
 						MAIN_GUI.term = comboBox.getSelectedItem().toString();
-						createClass(Integer.parseInt(textField_A.getText()),
-								Integer.parseInt(textField_AR.getText()),
-								Integer.parseInt(textField_B.getText()),
-								Integer.parseInt(textField_BR.getText()),
-								Integer.parseInt(textField_C.getText()),
-								Integer.parseInt(textField_CR.getText()));
+						if (comboBox.getSelectedItem().toString()
+								.equals("1. Term")) {
+							createClassTerm_1(
+									Integer.parseInt(textField_A.getText()),
+									Integer.parseInt(textField_AR.getText()),
+									Integer.parseInt(textField_B.getText()),
+									Integer.parseInt(textField_BR.getText()),
+									Integer.parseInt(textField_C.getText()),
+									Integer.parseInt(textField_CR.getText()));
+
+						} else {
+							createClassTerm_2_3(
+									Integer.parseInt(textField_A.getText()),
+									Integer.parseInt(textField_AR.getText()),
+									Integer.parseInt(textField_B.getText()),
+									Integer.parseInt(textField_BR.getText()),
+									Integer.parseInt(textField_C.getText()),
+									Integer.parseInt(textField_CR.getText()));
+						}
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
 								try {
@@ -201,13 +214,35 @@ public class INFO_GUI extends JFrame {
 		contentPane.add(comboBox);
 	}
 
-	static void createClass(int a, int ar, int b, int br, int c, int cr) {
+	static void createClassTerm_2_3(int a, int ar, int b, int br, int c, int cr) {
 
 		for (int i = 0; i < a; i++)
 			Classes.A_Term2_CLASS.add(new Classes.A_Term2());
 
 		for (int i = 0; i < ar; i++)
 			Classes.AR_Term2_CLASS.add(new Classes.AR_Term2());
+
+		for (int i = 0; i < b; i++)
+			Classes.B_CLASS.add(new Classes.B());
+
+		for (int i = 0; i < br; i++)
+			Classes.BR_CLASS.add(new Classes.BR());
+
+		for (int i = 0; i < c; i++)
+			Classes.C_CLASS.add(new Classes.C());
+
+		for (int i = 0; i < cr; i++)
+			Classes.CR_CLASS.add(new Classes.CR());
+
+	}
+
+	static void createClassTerm_1(int a, int ar, int b, int br, int c, int cr) {
+
+		for (int i = 0; i < a; i++)
+			Classes.A_CLASS.add(new Classes.A());
+
+		for (int i = 0; i < ar; i++)
+			Classes.AR_CLASS.add(new Classes.AR());
 
 		for (int i = 0; i < b; i++)
 			Classes.B_CLASS.add(new Classes.B());

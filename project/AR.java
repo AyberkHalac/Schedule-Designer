@@ -23,6 +23,7 @@ public class AR {
 					while (!canTakeThisLevel(teacher, "AR")
 							|| !canTakeThisLessonType(teacher, "MC")
 							|| teacher.getCourseHour() < 15) {
+
 						teacher = teacherList2.get((int) rnd
 								.nextInt(teacherList2.size() + 0));
 
@@ -166,7 +167,6 @@ public class AR {
 					teacher.setRestHour(0);
 					teacher.setCourseHour(teacher.getCourseHour() + 10);
 					cls.t1 = teacher;
-					teacherList2.remove(cls.t1);
 				}
 
 			}
@@ -200,7 +200,7 @@ public class AR {
 						while (!canTakeThisLevel(teacher, "AR")
 								|| !canTakeThisLessonType(teacher, "RW")
 								|| teacher.getCourseHour() < 10
-								|| teacher.getName().equals(cls.t1.getName())) {
+								|| teacher.equals(cls.t1)) {
 							list.remove(teacher);
 							if (list.size() > 0)
 								teacher = list.get((int) rnd.nextInt(list
@@ -371,7 +371,6 @@ public class AR {
 							teacher.setRestHour(0);
 							teacher.setCourseHour(teacher.getCourseHour() + 10);
 							cls.t2 = teacher;
-							teacherList2.remove(cls.t2);
 
 						}
 						list.remove(teacher);
@@ -416,8 +415,8 @@ public class AR {
 						while (!canTakeThisLevel(teacher, "AR")
 								|| !canTakeThisLessonType(teacher, "LS")
 								|| teacher.getCourseHour() < 5
-								|| (teacher.getName().equals(cls.t1.getName()) && teacher
-										.getName().equals(cls.t2.getName()))) {
+								|| (teacher.equals(cls.t1) && teacher
+										.equals(cls.t2))) {
 							list.remove(teacher);
 							if (list.size() != 0)
 								teacher = list.get((int) rnd.nextInt(list
@@ -560,7 +559,6 @@ public class AR {
 							teacher.setRestHour(0);
 							teacher.setCourseHour(teacher.getCourseHour() + 5);
 							cls.t3 = teacher;
-							teacherList2.remove(cls.t3);
 
 						}
 						list.remove(teacher);
