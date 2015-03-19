@@ -227,7 +227,8 @@ public class A_Term2 {
 				list.clear();
 			}
 
-		}
+		}else
+			control = false;
 
 	}
 

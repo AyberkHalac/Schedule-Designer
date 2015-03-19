@@ -223,7 +223,8 @@ public class BR {
 				list.clear();
 			}
 
-		}
+		}else
+			control = false;
 
 	}
 

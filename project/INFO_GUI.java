@@ -46,7 +46,7 @@ public class INFO_GUI extends JFrame {
 		setTitle("INFORMATIONS");
 		setResizable(false);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(230, 230, 250));
+		contentPane.setBackground(new Color(204, 204, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -77,24 +77,24 @@ public class INFO_GUI extends JFrame {
 
 		textField_A = new JTextField();
 		textField_A.setFont(new Font("Calibri", Font.BOLD, 18));
-		textField_A.setBounds(279, 59, 30, 20);
+		textField_A.setBounds(279, 59, 41, 20);
 		contentPane.add(textField_A);
 		textField_A.setColumns(10);
 
 		textField_AR = new JTextField();
-		textField_AR.setBounds(279, 91, 30, 20);
+		textField_AR.setBounds(279, 91, 41, 20);
 		textField_AR.setFont(new Font("Calibri", Font.BOLD, 18));
 		contentPane.add(textField_AR);
 		textField_AR.setColumns(10);
 
 		textField_B = new JTextField();
-		textField_B.setBounds(279, 123, 30, 20);
+		textField_B.setBounds(279, 123, 41, 20);
 		textField_B.setFont(new Font("Calibri", Font.BOLD, 18));
 		contentPane.add(textField_B);
 		textField_B.setColumns(10);
 
 		textField_BR = new JTextField();
-		textField_BR.setBounds(279, 155, 30, 20);
+		textField_BR.setBounds(279, 155, 41, 20);
 		textField_BR.setFont(new Font("Calibri", Font.BOLD, 18));
 		contentPane.add(textField_BR);
 		textField_BR.setColumns(10);
@@ -176,7 +176,7 @@ public class INFO_GUI extends JFrame {
 		contentPane.add(lblNewLabel);
 
 		textField_Teacher = new JTextField();
-		textField_Teacher.setBounds(279, 28, 30, 20);
+		textField_Teacher.setBounds(279, 28, 41, 20);
 		textField_Teacher.setFont(new Font("Calibri", Font.BOLD, 18));
 		contentPane.add(textField_Teacher);
 		textField_Teacher.setColumns(10);
@@ -196,13 +196,13 @@ public class INFO_GUI extends JFrame {
 		textField_C = new JTextField();
 		textField_C.setFont(new Font("Calibri", Font.BOLD, 18));
 		textField_C.setColumns(10);
-		textField_C.setBounds(279, 186, 30, 20);
+		textField_C.setBounds(279, 186, 41, 20);
 		contentPane.add(textField_C);
 
 		textField_CR = new JTextField();
 		textField_CR.setFont(new Font("Calibri", Font.BOLD, 18));
 		textField_CR.setColumns(10);
-		textField_CR.setBounds(279, 220, 30, 20);
+		textField_CR.setBounds(279, 220, 41, 20);
 		contentPane.add(textField_CR);
 
 		comboBox = new JComboBox();

@@ -1,6 +1,7 @@
 package project;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.SystemColor;
@@ -44,15 +45,8 @@ public class MAIN_GUI extends JFrame {
 	private JScrollPane scrollpane;
 
 	private JButton programButton;
-	private JButton btnLesson1;
-	private JButton btnLesson2;
-	private JButton btnLesson3;
-	private JButton btnLesson4;
-	private JButton btnLesson5;
-	private JButton btnLesson6;
 
 	private JComboBox<String> comboBox;
-	private JComboBox<String> comboBoxDays;
 	private MutableComboBoxModel mCmodel;
 	private JRadioButton rdbtnA;
 	private JRadioButton rdbtnAr;
@@ -73,20 +67,14 @@ public class MAIN_GUI extends JFrame {
 	private static int numberOfTeachers;
 	private JTextField lessonHour;
 
-	private boolean toogleB1 = false;
-	private boolean toogleB2 = false;
-	private boolean toogleB3 = false;
-	private boolean toogleB4 = false;
-	private boolean toogleB5 = false;
-	private boolean toogleB6 = false;
-
 	public MAIN_GUI() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1295, 813);
 		setTitle("TOBB ETU FOREIGN LANGUAGES");
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
+
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.controlHighlight);
+		contentPane.setBackground(new Color(204, 204, 255));
 		contentPane.setForeground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -137,21 +125,21 @@ public class MAIN_GUI extends JFrame {
 		rdbtnCr.setBounds(460, 404, 48, 23);
 		contentPane.add(rdbtnCr);
 		// ///////////////////////////////////LABELS/////////////////////////////////////////////////
-		lblCourses = new JLabel("COURSES *");
+		lblCourses = new JLabel("COURSES");
 		lblCourses.setFont(new Font("Tempus Sans ITC", Font.BOLD | Font.ITALIC,
 				12));
-		lblCourses.setBounds(441, 131, 102, 14);
+		lblCourses.setBounds(449, 131, 102, 14);
 		contentPane.add(lblCourses);
 
 		lblOffDays = new JLabel("OFFDAYS");
 		lblOffDays.setFont(new Font("Tempus Sans ITC", Font.BOLD | Font.ITALIC,
 				12));
-		lblOffDays.setBounds(684, 131, 86, 14);
+		lblOffDays.setBounds(692, 131, 86, 26);
 		contentPane.add(lblOffDays);
 
 		JLabel lblCourseType = new JLabel("COURSE TYPE");
 		lblCourseType.setFont(new Font("Tempus Sans ITC", Font.BOLD, 12));
-		lblCourseType.setBounds(928, 131, 102, 14);
+		lblCourseType.setBounds(937, 131, 102, 14);
 		contentPane.add(lblCourseType);
 		// ///////////////////////////////////TBL_FILES///////////////////////////////////////////////
 		DefaultTableModel model = new DefaultTableModel();
@@ -176,7 +164,7 @@ public class MAIN_GUI extends JFrame {
 
 					model.addRow(new Object[] {
 							comboBox.getSelectedItem().toString(), courses(),
-							courseType(), offDay(), lessonHour.getText() });
+							courseType(), "OFFDAYS", lessonHour.getText() });
 					//
 					Teacher teacher = new Teacher();
 					teacher.setName(comboBox.getSelectedItem().toString());
@@ -184,9 +172,7 @@ public class MAIN_GUI extends JFrame {
 					teacher.setCourseHourORG(Integer.parseInt(lessonHour
 							.getText()));
 					teacher.setRestHour(Integer.parseInt(lessonHour.getText()));
-					teacher.setOffDay(comboBoxDays.getSelectedItem().toString());
 					teacher.getCourseLevel().addAll(course());
-					String offDay = comboBoxDays.getSelectedItem().toString();
 					if (radioListenning.isSelected())
 						teacher.getLessonType().add("LS");
 					if (radioMainCourse.isSelected())
@@ -196,37 +182,15 @@ public class MAIN_GUI extends JFrame {
 					teacherList.add(teacher);
 					//
 					int weekDay = 0;
-
-					switch (offDay) {
-					case "Monday":
-						weekDay = 0;
-						break;
-					case "Tuesday":
-						weekDay = 1;
-						break;
-					case "Wednesday":
-						weekDay = 2;
-						break;
-					case "Thursday":
-						weekDay = 3;
-						break;
-					case "Friday":
-						weekDay = 4;
-						break;
-					}
+					for (int i = 0; i < 6; i++)
+						for (int j = 0; j < 5; j++)
+							teacher.getTeacherSchedule()[j][i] = Offdays.teacherSchedule[j][i];
 					//
-					if (toogleB1)
-						teacher.getTeacherSchedule()[weekDay][0] = "OFFDAY";
-					if (toogleB2)
-						teacher.getTeacherSchedule()[weekDay][1] = "OFFDAY";
-					if (toogleB3)
-						teacher.getTeacherSchedule()[weekDay][2] = "OFFDAY";
-					if (toogleB4)
-						teacher.getTeacherSchedule()[weekDay][3] = "OFFDAY";
-					if (toogleB5)
-						teacher.getTeacherSchedule()[weekDay][4] = "OFFDAY";
-					if (toogleB6)
-						teacher.getTeacherSchedule()[weekDay][5] = "OFFDAY";
+					for (int j = 0; j < 6; j++) {
+						for (int k = 0; k < 5; k++) {
+							Offdays.teacherSchedule[k][j] = null;
+						}
+					}
 					//
 					reset();
 					//
@@ -241,8 +205,9 @@ public class MAIN_GUI extends JFrame {
 		saveButton.setBounds(1177, 220, 117, 72);
 		contentPane.add(saveButton);
 		/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
-		programButton = new JButton("MAKE PROGRAM");
-		programButton.setBackground(SystemColor.control);
+		programButton = new JButton("BUILD SCHEDULE");
+		programButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		programButton.setBackground(new Color(255, 153, 153));
 		programButton.setForeground(new Color(255, 0, 0));
 		programButton.addActionListener(new ActionListener() {
 
@@ -252,107 +217,122 @@ public class MAIN_GUI extends JFrame {
 				Classes c = new Classes();
 
 				if (term.equals("1. Term")) {
-					int counter = 0;
-					do {
-						if (A.control == false || AR.control == false
-								|| B.control == false || BR.control == false
-								|| C.control == false || CR.control == false) {
-
-							for (Teacher teacher : teacherList) {
-								for (int j = 0; j < 6; j++) {
-									for (int k = 0; k < 5; k++) {
-										if (teacher.getTeacherSchedule()[k][j] != null
-												|| !(teacher
-														.getTeacherSchedule()[k][j] == "OFFDAY")) {
-											teacher.getTeacherSchedule()[k][j] = null;
-										}
-									}
-								}
-
-								teacher.setCourseHour(teacher
-										.getCourseHourORG());
-								teacher.setRestHour(0);
-							}
-							teacherList2.clear();
-							teacherList2.addAll(teacherList);
-
-							Classes.A_CLASS.clear();
-							Classes.AR_CLASS.clear();
-							Classes.B_CLASS.clear();
-							Classes.BR_CLASS.clear();
-							Classes.C_CLASS.clear();
-							Classes.CR_CLASS.clear();
-							A.control = true;
-							AR.control = true;
-							B.control = true;
-							BR.control = true;
-							C.control = true;
-							CR.control = true;
-						}
-
-						if (Classes.A_CLASS.size() != 0) {
-							A.addMCA(teacherList2);
-							A.addRWA(teacherList2);
-							A.addLSA(teacherList2);
-						}
-						if (Classes.AR_CLASS.size() != 0 && A.control) {
-							AR.addMCAR(teacherList2);
-							AR.addRWAR(teacherList2);
-							AR.addLSAR(teacherList2);
-						}
-						if (Classes.B_CLASS.size() != 0 && A.control
-								&& AR.control && B.control && C.control
-								&& BR.control) {
-							B.addMCB(teacherList2);
-							B.addRWB(teacherList2);
-							B.addLSB(teacherList2);
-						}
-						if (Classes.BR_CLASS.size() != 0 && A.control
-								&& AR.control && B.control) {
-							BR.addMCBR(teacherList2);
-							BR.addRWBR(teacherList2);
-							BR.addLSBR(teacherList2);
-						}
-						if (Classes.C_CLASS.size() != 0 && A.control
-								&& AR.control && B.control && BR.control) {
-							C.addMCC(teacherList2);
-							C.addRWC(teacherList2);
-							C.addLSC(teacherList2);
-						}
-						if (Classes.CR_CLASS.size() != 0 && A.control
-								&& AR.control && B.control && C.control
-								&& BR.control) {
-							CR.addMCCR(teacherList2);
-							CR.addRWCR(teacherList2);
-							CR.addLSCR(teacherList2);
-						}
-
-						if (counter == 40)
-							break;
-						else {
-							counter++;
-
-						}
-					} while (A.control == false || AR.control == false
-							|| B.control == false || BR.control == false
-							|| C.control == false || CR.control == false);
-
-					if (A.control && AR.control && B.control && BR.control
-							&& C.control && CR.control) {
-
-						Print print = new Print();
-						try {
-							print.printTeacher(teacherList);
-							print.printA(Classes.A_CLASS);
-							print.printAR(Classes.AR_CLASS);
-							print.printB(Classes.B_CLASS);
-							print.printBR(Classes.BR_CLASS);
-							print.printC(Classes.C_CLASS);
-							print.printCR(Classes.CR_CLASS);
-						} catch (WriteException | BiffException | IOException e1) {
-							e1.printStackTrace();
-						}
-					}
+					// int counter = 0;
+					// do {
+					// if (A.control == false || AR.control == false
+					// || B.control == false || BR.control == false
+					// || C.control == false || CR.control == false) {
+					//
+					// for (Teacher teacher : teacherList) {
+					// for (int j = 0; j < 6; j++) {
+					// for (int k = 0; k < 5; k++) {
+					// if (teacher.getTeacherSchedule()[k][j] != null
+					// || !(teacher
+					// .getTeacherSchedule()[k][j] == "OFFDAY")) {
+					// teacher.getTeacherSchedule()[k][j] = null;
+					// }
+					// }
+					// }
+					//
+					// teacher.setCourseHour(teacher
+					// .getCourseHourORG());
+					// teacher.setRestHour(0);
+					// }
+					// teacherList2.clear();
+					// teacherList2.addAll(teacherList);
+					//
+					// Classes.A_CLASS.clear();
+					// Classes.AR_CLASS.clear();
+					// Classes.B_CLASS.clear();
+					// Classes.BR_CLASS.clear();
+					// Classes.C_CLASS.clear();
+					// Classes.CR_CLASS.clear();
+					// A.control = true;
+					// AR.control = true;
+					// B.control = true;
+					// BR.control = true;
+					// C.control = true;
+					// CR.control = true;
+					//
+					// INFO_GUI.createClassTerm_2_3(c.getALevel(),
+					// c.getARLevel(), c.getBLevel(),
+					// c.getBRLevel(), c.getCLevel(),
+					// c.getCRLevel());
+					// }
+					//
+					// if (Classes.A_CLASS.size() != 0) {
+					// A.addMCA(teacherList2);
+					// A.addRWA(teacherList2);
+					// A.addLSA(teacherList2);
+					// }
+					// if (Classes.AR_CLASS.size() != 0 && A.control) {
+					// AR.addMCAR(teacherList2);
+					// AR.addRWAR(teacherList2);
+					// AR.addLSAR(teacherList2);
+					// }
+					// if (Classes.B_CLASS.size() != 0 && A.control
+					// && AR.control && B.control && C.control
+					// && BR.control) {
+					// B.addMCB(teacherList2);
+					// B.addRWB(teacherList2);
+					// B.addLSB(teacherList2);
+					// }
+					// if (Classes.BR_CLASS.size() != 0 && A.control
+					// && AR.control && B.control) {
+					// BR.addMCBR(teacherList2);
+					// BR.addRWBR(teacherList2);
+					// BR.addLSBR(teacherList2);
+					// }
+					// if (Classes.C_CLASS.size() != 0 && A.control
+					// && AR.control && B.control && BR.control) {
+					// C.addMCC(teacherList2);
+					// C.addRWC(teacherList2);
+					// C.addLSC(teacherList2);
+					// }
+					// if (Classes.CR_CLASS.size() != 0 && A.control
+					// && AR.control && B.control && C.control
+					// && BR.control) {
+					// CR.addMCCR(teacherList2);
+					// CR.addRWCR(teacherList2);
+					// CR.addLSCR(teacherList2);
+					// }
+					//
+					// if (counter == 40)
+					// break;
+					// else {
+					// counter++;
+					//
+					// }
+					// } while (A.control == false || AR.control == false
+					// || B.control == false || BR.control == false
+					// || C.control == false || CR.control == false);
+					//
+					// if (A.control && AR.control && B.control && BR.control
+					// && C.control && CR.control) {
+					//
+					// Print print = new Print();
+					// try {
+					// JOptionPane
+					// .showMessageDialog(null,
+					// "Please, wait! Evaluating Available Possibilities");
+					// print.printTeacher(teacherList);
+					// print.printA(Classes.A_CLASS);
+					// print.printAR(Classes.AR_CLASS);
+					// print.printB(Classes.B_CLASS);
+					// print.printBR(Classes.BR_CLASS);
+					// print.printC(Classes.C_CLASS);
+					// print.printCR(Classes.CR_CLASS);
+					// JOptionPane.showMessageDialog(null,
+					// "Done! Please open C:\\Schedule");
+					// } catch (WriteException | BiffException | IOException e1)
+					// {
+					// e1.printStackTrace();
+					// }
+					// } else {
+					// JOptionPane
+					// .showMessageDialog(null,
+					// "There is no option to make program. Plase start again.");
+					// }
 
 				}
 				/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
@@ -410,42 +390,54 @@ public class MAIN_GUI extends JFrame {
 
 						if (Classes.A_Term2_CLASS.size() != 0) {
 							A_Term2.addMCA(teacherList2);
-							A_Term2.addRWA(teacherList2);
-							A_Term2.addLSA(teacherList2);
+							if (A_Term2.control)
+								A_Term2.addRWA(teacherList2);
+							if (A_Term2.control)
+								A_Term2.addLSA(teacherList2);
 						}
 						if (Classes.AR_Term2_CLASS.size() != 0
 								&& A_Term2.control) {
 							AR_Term2.addMCAR(teacherList2);
-							AR_Term2.addRWAR(teacherList2);
-							AR_Term2.addLSAR(teacherList2);
+							if (AR_Term2.control)
+								AR_Term2.addRWAR(teacherList2);
+							if (AR_Term2.control)
+								AR_Term2.addLSAR(teacherList2);
 						}
 						if (Classes.B_CLASS.size() != 0 && A_Term2.control
 								&& AR_Term2.control) {
 							B.addMCB(teacherList2);
-							B.addRWB(teacherList2);
-							B.addLSB(teacherList2);
+							if (B.control)
+								B.addRWB(teacherList2);
+							if (B.control)
+								B.addLSB(teacherList2);
 
 						}
 						if (Classes.BR_CLASS.size() != 0 && B.control
 								&& BR.control && A_Term2.control
 								&& AR_Term2.control) {
 							BR.addMCBR(teacherList2);
-							BR.addRWBR(teacherList2);
-							BR.addLSBR(teacherList2);
+							if (BR.control)
+								BR.addRWBR(teacherList2);
+							if (BR.control)
+								BR.addLSBR(teacherList2);
 						}
 						if (Classes.C_CLASS.size() != 0 && B.control
 								&& BR.control && C.control && A_Term2.control
 								&& AR_Term2.control) {
 							C.addMCC(teacherList2);
-							C.addRWC(teacherList2);
-							C.addLSC(teacherList2);
+							if (C.control)
+								C.addRWC(teacherList2);
+							if (C.control)
+								C.addLSC(teacherList2);
 						}
 						if (Classes.CR_CLASS.size() != 0 && B.control
 								&& BR.control && C.control && CR.control
 								&& A_Term2.control && AR_Term2.control) {
 							CR.addMCCR(teacherList2);
-							CR.addRWCR(teacherList2);
-							CR.addLSCR(teacherList2);
+							if (CR.control)
+								CR.addRWCR(teacherList2);
+							if (CR.control)
+								CR.addLSCR(teacherList2);
 						}
 
 						if (counter == 40)
@@ -464,6 +456,9 @@ public class MAIN_GUI extends JFrame {
 
 						Print print = new Print();
 						try {
+							JOptionPane
+									.showMessageDialog(null,
+											"Please, wait! Evaluating Available Possibilities");
 							print.printTeacher(teacherList);
 							print.printATerm2(Classes.A_Term2_CLASS);
 							print.printARTerm2(Classes.AR_Term2_CLASS);
@@ -471,9 +466,16 @@ public class MAIN_GUI extends JFrame {
 							print.printBR(Classes.BR_CLASS);
 							print.printC(Classes.C_CLASS);
 							print.printCR(Classes.CR_CLASS);
+							JOptionPane.showMessageDialog(null,
+									"Done! Please open C:\\Schedule");
 						} catch (WriteException | BiffException | IOException e1) {
 							e1.printStackTrace();
 						}
+					} else {
+						JOptionPane
+								.showMessageDialog(null,
+										"There is no option to make program. Plase start again.");
+
 					}
 				}
 
@@ -501,8 +503,8 @@ public class MAIN_GUI extends JFrame {
 
 		TOBB = new JLabel("Department of Foreign Languages");
 		TOBB.setVerticalAlignment(SwingConstants.BOTTOM);
-		TOBB.setFont(new Font("Tahoma", Font.BOLD, 15));
-		TOBB.setBounds(53, 72, 266, 34);
+		TOBB.setFont(new Font("Tahoma", Font.BOLD, 17));
+		TOBB.setBounds(37, 58, 375, 34);
 		contentPane.add(TOBB);
 
 		lblTeachers = new JLabel("TEACHERS :");
@@ -511,122 +513,35 @@ public class MAIN_GUI extends JFrame {
 		lblTeachers.setBounds(37, 233, 109, 14);
 		contentPane.add(lblTeachers);
 
-		JLabel lblLessonsHour = new JLabel(
-				"Hocanin almasi gereken toplam ders saati  :");
-		lblLessonsHour.setBounds(37, 343, 266, 14);
+		JLabel lblLessonsHour = new JLabel("Total Lesson Hour :");
+		lblLessonsHour.setFont(new Font("Verdana", Font.BOLD, 12));
+		lblLessonsHour.setBounds(37, 343, 140, 14);
 		contentPane.add(lblLessonsHour);
 
 		lessonHour = new JTextField();
 		lessonHour.setFont(new Font("Calibri", Font.BOLD, 16));
-		lessonHour.setBounds(313, 340, 27, 20);
+		lessonHour.setBounds(226, 341, 43, 20);
 		contentPane.add(lessonHour);
 		lessonHour.setColumns(10);
-		// ////////////////////////////////////////////////////////////////////////////////////////
-		btnLesson1 = new JButton("LESSON -1-");
-		btnLesson1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (toogleB1 == false) {
-					toogleB1 = true;
-					btnLesson1.setBackground(Color.red);
-				} else {
-					toogleB1 = false;
-					btnLesson1.setBackground(SystemColor.scrollbar);
-				}
-			}
-		});
-		btnLesson1.setBounds(670, 215, 117, 23);
-		btnLesson1.setBackground(SystemColor.scrollbar);
-		contentPane.add(btnLesson1);
 
-		btnLesson2 = new JButton("LESSON -2-");
-		btnLesson2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (toogleB2 == false) {
-					toogleB2 = true;
-					btnLesson2.setBackground(Color.red);
-				} else {
-					toogleB2 = false;
-					btnLesson2.setBackground(SystemColor.scrollbar);
-				}
+		JButton btnNewButton = new JButton("OFFDAYS");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							Offdays frame = new Offdays();
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			}
-		});
-		btnLesson2.setBounds(670, 258, 117, 23);
-		btnLesson2.setBackground(SystemColor.scrollbar);
-		contentPane.add(btnLesson2);
 
-		btnLesson3 = new JButton("LESSON -3-");
-		btnLesson3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (toogleB3 == false) {
-					toogleB3 = true;
-					btnLesson3.setBackground(Color.red);
-				} else {
-					toogleB3 = false;
-					btnLesson3.setBackground(SystemColor.scrollbar);
-				}
-			}
 		});
-		btnLesson3.setBounds(670, 297, 117, 23);
-		btnLesson3.setBackground(SystemColor.scrollbar);
-		contentPane.add(btnLesson3);
-
-		btnLesson4 = new JButton("LESSON -4-");
-		btnLesson4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (toogleB4 == false) {
-					toogleB4 = true;
-					btnLesson4.setBackground(Color.red);
-				} else {
-					toogleB4 = false;
-					btnLesson4.setBackground(SystemColor.scrollbar);
-				}
-			}
-		});
-		btnLesson4.setBounds(670, 339, 117, 23);
-		btnLesson4.setBackground(SystemColor.scrollbar);
-		contentPane.add(btnLesson4);
-
-		btnLesson5 = new JButton("LESSON -5-");
-		btnLesson5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (toogleB5 == false) {
-					toogleB5 = true;
-					btnLesson5.setBackground(Color.red);
-				} else {
-					toogleB5 = false;
-					btnLesson5.setBackground(SystemColor.scrollbar);
-				}
-			}
-		});
-		btnLesson5.setBounds(670, 380, 117, 23);
-		btnLesson5.setBackground(SystemColor.scrollbar);
-		contentPane.add(btnLesson5);
-
-		btnLesson6 = new JButton("LESSON -6-");
-		btnLesson6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (toogleB6 == false) {
-					toogleB6 = true;
-					btnLesson6.setBackground(Color.red);
-				} else {
-					toogleB6 = false;
-					btnLesson6.setBackground(SystemColor.scrollbar);
-				}
-			}
-		});
-		btnLesson6.setBounds(670, 419, 117, 23);
-		btnLesson6.setBackground(SystemColor.scrollbar);
-		contentPane.add(btnLesson6);
-
-		comboBoxDays = new JComboBox();
-		comboBoxDays.setBackground(SystemColor.scrollbar);
-		comboBoxDays.setBounds(638, 168, 182, 23);
-		comboBoxDays.addItem("Monday");
-		comboBoxDays.addItem("Tuesday");
-		comboBoxDays.addItem("Wednesday");
-		comboBoxDays.addItem("Thursday");
-		comboBoxDays.addItem("Friday");
-		contentPane.add(comboBoxDays);
+		btnNewButton.setBounds(675, 198, 89, 40);
+		contentPane.add(btnNewButton);
 
 	}
 
@@ -645,19 +560,6 @@ public class MAIN_GUI extends JFrame {
 		radioListenning.setSelected(false);
 		lessonHour.setText("");
 		mCmodel.removeElement(mCmodel.getSelectedItem());
-		toogleB1 = false;
-		btnLesson1.setBackground(SystemColor.scrollbar);
-		toogleB2 = false;
-		btnLesson2.setBackground(SystemColor.scrollbar);
-		toogleB3 = false;
-		btnLesson3.setBackground(SystemColor.scrollbar);
-		toogleB4 = false;
-		btnLesson4.setBackground(SystemColor.scrollbar);
-		toogleB5 = false;
-		btnLesson5.setBackground(SystemColor.scrollbar);
-		toogleB6 = false;
-		btnLesson6.setBackground(SystemColor.scrollbar);
-		comboBoxDays.setSelectedIndex(0);
 		if (mCmodel.getSize() != 0)
 			comboBox.setSelectedIndex(0);
 	}
@@ -771,9 +673,7 @@ public class MAIN_GUI extends JFrame {
 				|| rdbtnBr.isSelected() || rdbtnC.isSelected() || rdbtnCr
 					.isSelected())
 				&& (radioMainCourse.isSelected() || radioReading.isSelected() || radioListenning
-						.isSelected())
-				&& (toogleB1 || toogleB2 || toogleB3 || toogleB4 || toogleB5 || toogleB6)
-				&& !lessonHour.getText().equals("")
+						.isSelected()) && !lessonHour.getText().equals("")
 
 		)
 			return true;
@@ -781,33 +681,7 @@ public class MAIN_GUI extends JFrame {
 			return false;
 	}
 
-	/**
-	 * @return
-	 */
-	private String offDay() {
-		String offDay = "";
-
-		offDay += comboBoxDays.getSelectedItem().toString() + " - ";
-		if (toogleB1)
-			offDay += "1. Lesson-";
-		if (toogleB2)
-			offDay += "2. Lesson-";
-		if (toogleB3)
-			offDay += "3. Lesson-";
-		if (toogleB4)
-			offDay += "4. Lesson-";
-		if (toogleB5)
-			offDay += "5. Lesson-";
-		if (toogleB6)
-			offDay += "6. Lesson-";
-
-		if (offDay.charAt(offDay.length() - 1) == '-')
-			offDay = (String) offDay.subSequence(0, offDay.lastIndexOf('-'));
-		return offDay;
-	}
-
 	protected static String term;
 	private static ArrayList<Teacher> teacherList = new ArrayList<Teacher>();
 	private static ArrayList<Teacher> teacherList2 = new ArrayList<Teacher>();
-
 }

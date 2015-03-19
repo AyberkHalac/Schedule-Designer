@@ -41,6 +41,7 @@ public class LoginPage extends JFrame {
 		setTitle("TOBB ETU FOREIGN LANGUAGES");
 		setBounds(100, 100, 690, 363);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(204, 204, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		setResizable(false);
@@ -104,7 +105,7 @@ public class LoginPage extends JFrame {
 		Image img = new ImageIcon(this.getClass().getResource(
 				"/images/tobbSymbol.png")).getImage();
 		icon.setIcon(new ImageIcon(img));
-		icon.setBounds(20, 80, 250, 194);
+		icon.setBounds(10, 80, 236, 200);
 		contentPane.add(icon);
 
 	}

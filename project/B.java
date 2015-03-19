@@ -225,7 +225,8 @@ public class B {
 				list.clear();
 			}
 
-		}
+		} else
+			control = false;
 
 	}
 
@@ -720,6 +721,11 @@ public class B {
 
 	}
 
+	/**
+	 * 
+	 * @param array
+	 * @return
+	 */
 	private static boolean check(int array[]) {
 		for (int i : array) {
 			if (i == 0)

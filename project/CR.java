@@ -223,7 +223,8 @@ public class CR {
 				list.clear();
 			}
 
-		}
+		}else
+			control = false;
 
 	}
 

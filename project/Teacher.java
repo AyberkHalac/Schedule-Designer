@@ -12,14 +12,6 @@ public class Teacher {
 		this.courseHour = courseHour;
 	}
 
-	String getOffDay() {
-		return offDay;
-	}
-
-	void setOffDay(String offDay) {
-		this.offDay = offDay;
-	}
-
 	String getName() {
 		return name;
 	}
@@ -66,7 +58,6 @@ public class Teacher {
 
 	private int courseHour;
 	private int courseHourORG;
-	private String offDay;
 	private String name;
 	private int restHour;
 	private ArrayList<String> lessonType = new ArrayList<String>();

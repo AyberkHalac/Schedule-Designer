@@ -223,7 +223,8 @@ public class AR_Term2 {
 				list.clear();
 			}
 
-		}
+		}else
+			control = false;
 
 	}
 

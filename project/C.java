@@ -223,7 +223,8 @@ public class C {
 				list.clear();
 			}
 
-		}
+		}else
+			control = false;
 
 	}
 
